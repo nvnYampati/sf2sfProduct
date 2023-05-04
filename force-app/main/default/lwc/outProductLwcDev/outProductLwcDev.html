@@ -1,0 +1,34 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-box">
+            <lightning-button label="Refresh Access" onclick={refreshAccess} >
+            </lightning-button>
+            <p>This is your token, wuss, its's hidden foo</p><br/>
+            <p hidden > access string {tokenStr}</p><br/>
+            <template if:true={regProdList.data}>
+                <template for:each={regProdList.data} for:item="regProd">
+                    <c-out-product-entry-item key = {regProd.Id}
+                    record-item = {regProd} onitemselect = {handleItemSelect}
+                    >
+                    </c-out-product-entry-item>
+                </template>
+            </template>
+            <template if:false={regProdList.data}>
+                <p>error caused while loading list</p><br/>
+                <p>{error}</p>
+            </template>
+            <template if:true={selectedItem}>
+                <div class="slds-box" >
+                    <p>
+                        product Name            | {selectedItem.Name} <br/>
+                        product Description     | {selectedItem.Description} <br/>
+                        product Price           | {selectedItem.Price} <br/>
+                    </p>
+                </div>
+            </template>
+            <template if:false={selectedItem}>
+                <p> No Data </p>  
+            </template>
+        </div>
+    </article>
+</template>

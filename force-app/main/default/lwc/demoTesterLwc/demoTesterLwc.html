@@ -1,0 +1,9 @@
+<template>
+    <article class = "slds-card">
+        <template for:each={recordList.data} for:item="record">
+            <p key={record.Id}>
+                {record.Name}
+            </p>
+        </template>
+    </article>
+</template>
