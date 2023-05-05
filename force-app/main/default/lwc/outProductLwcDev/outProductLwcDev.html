@@ -5,14 +5,24 @@
             </lightning-button>
             <p>This is your token, wuss, its's hidden foo</p><br/>
             <p hidden > access string {tokenStr}</p><br/>
+            
             <template if:true={regProdList.data}>
-                <template for:each={regProdList.data} for:item="regProd">
-                    <c-out-product-entry-item key = {regProd.Id}
-                    record-item = {regProd} onitemselect = {handleItemSelect}
-                    >
-                    </c-out-product-entry-item>
-                </template>
+                <div class="slds-scrollable_y" style="height:10rem;width:24rem">
+                    <div class="slds-text-longform">
+                        <ul class="slds-list_vertical slds-has-dividers_bottom-space">
+                            <template for:each={regProdList.data} for:item="regProd">
+                                <li class="slds-item" key = {regProd.Id}>
+                                    <c-out-product-entry-item 
+                                    record-item = {regProd} onitemselect = {handleItemSelect}
+                                    >
+                                    </c-out-product-entry-item>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
             </template>
+            
             <template if:false={regProdList.data}>
                 <p>error caused while loading list</p><br/>
                 <p>{error}</p>
