@@ -1,4 +1,4 @@
-public class outProductProviderManager {
+public class outProductProviderController {
 
     public class ATWrap{
         public String id;
