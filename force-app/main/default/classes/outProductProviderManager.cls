@@ -1,4 +1,4 @@
-public class outProductOutManager {
+public class outProductProviderManager {
 
     public class ATWrap{
         public String id;
@@ -71,7 +71,8 @@ public class outProductOutManager {
          @AuraEnabled
         public id id {get;set;}
     }
-     @future(callout = true)		//	to register Product Ids into another Org
+    
+     @future(callout = true)		//	to register Product Ids into another Org, uses user auth flow
     public static void regInAProduct(string orgName, string Name, Id recId ){		// helper method 
 		string orgNameStr = '%'+orgName;
         string accessToken = [SELECT Id, Name, Access_Token__c, CreatedDate FROM Access_Token__c WHERE Name LIKE :orgNameStr ORDER BY CreatedDate DESC NULLS LAST LIMIT 1].Access_Token__c;
@@ -80,6 +81,25 @@ public class outProductOutManager {
         request.setMethod('POST');
         request.setEndpoint('https://oscarit52-dev-ed.develop.my.salesforce.com/services/apexrest/registerAProduct/');
         request.setHeader('Authorization','Bearer ' + accessToken);
+        request.setHeader('Content-Type','application/json');
+        string jsonBody = '{"Name":"'+Name+'", "recordId":"'+recId+'"}';
+        system.debug(jsonBody);
+        request.setBody(jsonBody);
+        system.debug('Request - '+request);
+        httpResponse response = new httpResponse();
+        try { response = protocol.send(request); }
+        catch(exception e){ system.debug('Error - ' + e); }
+        system.debug('Response - '+response.getBody());
+        productResponseWrap pr = (productResponseWrap) json.deserialize(response.getBody(), productResponseWrap.class);
+        system.debug('Response - '+pr);
+    }
+    
+     @future(callout = true)	// named credential flow	//	to register Product Ids into another Org
+    public static void regInAProductNamed( string Name, Id recId ){		// helper method 
+        http protocol = new http();
+        httpRequest request = new httpRequest();
+        request.setMethod('POST');
+        request.setEndpoint('callout:Dev1OrgNameCred/services/apexrest/registerAProduct');
         request.setHeader('Content-Type','application/json');
         string jsonBody = '{"Name":"'+Name+'", "recordId":"'+recId+'"}';
         system.debug(jsonBody);
