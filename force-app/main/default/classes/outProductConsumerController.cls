@@ -1,4 +1,4 @@
-public class outProductController {
+public class outProductConsumerController {
 	//sf2sf__mdt sf2Cred = sf2sf__mdt.getInstance('PIDMS_Org');
 	
     public class ATWrap{
